@@ -14,14 +14,25 @@ let server = http.createServer(app);
 let io = socketIO(server);
 
 app.use(express.static(publicPath));
-http://localhost:3000/c
-    io.on('connection', (socket) => {
-        console.log('New user connection');
 
-        socket.on('disconnect', () => {
-            console.log('User was disconnect from the server');
-        });
+io.on('connection', (socket) => {
+    console.log('New user connection');
+
+    socket.emit('newMessage', {
+        from: 'Jose',
+        text: 'See you then',
+        createdAt: 123123
     });
+
+    socket.on('createMessage', (message) => {
+        //lisener
+        console.log('createMessage', message);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('User was disconnect from the server');
+    });
+});
 
 server.listen(port, () => {
     console.log(`Started at port ${port}`);
